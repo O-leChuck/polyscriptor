@@ -42,7 +42,7 @@ google-generativeai>=0.8.0  # NOTE: deprecated by Google; still works; future mi
 numpy==1.26.4
 pandas==2.2.3
 pillow==11.1.0
-opencv-python==4.11.0.86
+opencv-python-headless==4.11.0.86  # headless: full build bundles Qt plugins that clash with PyQt6
 scikit-learn==1.6.1
 pyarrow==19.0.0
 
