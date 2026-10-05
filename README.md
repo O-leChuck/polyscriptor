@@ -89,6 +89,8 @@ python transcription_gui_plugin.py
 ```
 
 > **Note:** The plugin GUI requires `PyQt6` (included in `requirements.txt`). The web UI (`uvicorn web.polyscriptor_server:app`) works without PyQt6.
+>
+> **Linux:** PyQt6 (Qt ≥ 6.5) needs the system library `libxcb-cursor0`. If the GUI fails with *"Could not load the Qt platform plugin "xcb""*, install it: `sudo apt install libxcb-cursor0` (Debian/Ubuntu).
 
 **Remote server usage (GUI over X11):**
 ```bash
