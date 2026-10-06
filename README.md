@@ -209,8 +209,12 @@ Ready-to-use models for Cyrillic and Glagolitic manuscripts, trained with Polysc
 | [crnn-ctc-prosta-mova](https://huggingface.co/achimrabus/crnn-ctc-prosta-mova) | Prosta Mova (Old Ruthenian) | 3.77% | Continslav corpus (Martin Meindl) |
 | [crnn-ctc-ukrainian](https://huggingface.co/achimrabus/crnn-ctc-ukrainian) | Ukrainian (Cyrillic) | 4.76% | 19th–20th c. manuscripts (MultiHTR) |
 | [crnn-ctc-glagolitic](https://huggingface.co/achimrabus/crnn-ctc-glagolitic) | Croatian Glagolitic | 5.33% | Outputs Latin transliteration |
+| [crnn-ctc-russian](https://huggingface.co/achimrabus/crnn-ctc-russian) | Russian (Cyrillic) | 6.92% | 18th–20th c. manuscripts, print and typescript; pre- and post-reform orthography |
 
-All models run on CPU (no GPU required) and can be loaded directly in the CRNN-CTC engine.
+All models run on CPU (no GPU required). They are presets of the CRNN-CTC engine: in a fresh
+clone they appear as "[Hugging Face, auto-download]" and are downloaded on first load (then
+cached); no `models/` folder needs to be set up. A model placed under the registry path in
+`models/` is used instead of the download.
 
 ### TrOCR
 

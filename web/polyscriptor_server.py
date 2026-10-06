@@ -616,9 +616,17 @@ async def startup_event():
 
 def _get_pylaia_model_options() -> list:
     _import_segmenters()
-    from inference_pylaia_native import _scan_pylaia_models
+    from inference_pylaia_native import _scan_pylaia_models, preset_source
     _scan_pylaia_models(str(Path(__file__).resolve().parents[1] / "models"))
-    options = [{"label": k, "value": k} for k in PYLAIA_MODELS.keys()]
+    # Presets whose files are missing here and that are not on Hugging Face cannot
+    # load, so they are not offered (a fresh clone has no models/ folder)
+    options = []
+    for key, info in PYLAIA_MODELS.items():
+        source = preset_source(info)
+        if source == "local":
+            options.append({"label": key, "value": key})
+        elif source == "hf":
+            options.append({"label": f"{key} [Hugging Face, auto-download]", "value": key})
     options.append({"label": "Custom / local path…", "value": "__custom__"})
     return options
 
