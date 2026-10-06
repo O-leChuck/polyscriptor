@@ -225,19 +225,17 @@ A collection of TrOCR models for Cyrillic handwriting (Russian, Ukrainian, Churc
 
 **[https://huggingface.co/cyrillic-trocr](https://huggingface.co/cyrillic-trocr)**
 
-Built-in presets of the TrOCR engine (downloaded on first load):
+Built-in presets of the TrOCR engine (downloaded on first load); CER as reported on each
+model's validation set at training time:
 
-| Model | Script / Language | Note |
-|-------|-------------------|------|
-| [cyrillic-trocr/trocr-church-slavonic-handwritten](https://huggingface.co/cyrillic-trocr/trocr-church-slavonic-handwritten) | Church Slavonic | same data as the CRNN-CTC model, which reads it more accurately |
-| [cyrillic-trocr/trocr-ukrainian-handwritten](https://huggingface.co/cyrillic-trocr/trocr-ukrainian-handwritten) | Ukrainian | |
-| [cyrillic-trocr/trocr-handwritten-cyrillic](https://huggingface.co/cyrillic-trocr/trocr-handwritten-cyrillic) | Church Slavonic, Russian, Ukrainian | |
-| [achimrabus/trocr-glagolitic-handwritten](https://huggingface.co/achimrabus/trocr-glagolitic-handwritten) | Croatian Glagolitic | outputs Latin transliteration |
+| Model | Script / Language | Validation CER | Note |
+|-------|-------------------|-----|------|
+| [cyrillic-trocr/trocr-church-slavonic-handwritten](https://huggingface.co/cyrillic-trocr/trocr-church-slavonic-handwritten) | Church Slavonic | 4.99% | same data as the CRNN-CTC model (2.89%) |
+| [cyrillic-trocr/trocr-ukrainian-handwritten](https://huggingface.co/cyrillic-trocr/trocr-ukrainian-handwritten) | Ukrainian | 9.94% | |
+| [cyrillic-trocr/trocr-handwritten-cyrillic](https://huggingface.co/cyrillic-trocr/trocr-handwritten-cyrillic) | Church Slavonic, Russian, Ukrainian | 25.3% | noisy ground truth, see model card |
+| [achimrabus/trocr-glagolitic-handwritten](https://huggingface.co/achimrabus/trocr-glagolitic-handwritten) | Croatian Glagolitic | 6.42% | outputs Latin transliteration |
 
-Measured on the 28 held-out Ukrainian validation pages (970 lines, cut as rectangles, as
-Polyscriptor cuts them): CRNN-CTC `crnn-ctc-ukrainian` 10.7% CER, `trocr-ukrainian-handwritten`
-13.8%, `trocr-handwritten-cyrillic` 14.3%. Any other TrOCR model can be loaded by entering its
-HuggingFace ID or a local path.
+Any other TrOCR model can be loaded by entering its HuggingFace ID or a local path.
 
 ### LightOnOCR
 
