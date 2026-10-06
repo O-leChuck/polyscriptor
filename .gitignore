@@ -169,6 +169,7 @@ test_*.py
 !web/tests/test_*.py
 # Exception: the training guard is a real test of train_pylaia.py, not a scratch script
 !tests/test_train_guard.py
+!tests/test_eval_sets.py
 
 # Accidentally created files
 =*

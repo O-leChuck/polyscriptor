@@ -234,8 +234,9 @@ Built-in presets of the TrOCR engine (downloaded on first load):
 | [cyrillic-trocr/trocr-handwritten-cyrillic](https://huggingface.co/cyrillic-trocr/trocr-handwritten-cyrillic) | Church Slavonic, Russian, Ukrainian | |
 | [achimrabus/trocr-glagolitic-handwritten](https://huggingface.co/achimrabus/trocr-glagolitic-handwritten) | Croatian Glagolitic | outputs Latin transliteration |
 
-On held-out Ukrainian pages the CRNN-CTC model is clearly more accurate than the TrOCR models,
-so for these scripts start with CRNN-CTC. Any other TrOCR model can be loaded by entering its
+Measured on the 28 held-out Ukrainian validation pages (970 lines, cut as rectangles, as
+Polyscriptor cuts them): CRNN-CTC `crnn-ctc-ukrainian` 10.7% CER, `trocr-ukrainian-handwritten`
+13.8%, `trocr-handwritten-cyrillic` 14.3%. Any other TrOCR model can be loaded by entering its
 HuggingFace ID or a local path.
 
 ### LightOnOCR
