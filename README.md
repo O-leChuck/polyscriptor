@@ -180,7 +180,7 @@ ssh -L 8765:localhost:8765 user@your.server.edu
 - **Confidence filter** — slider to dim low-confidence lines
 - **Export** — TXT, CSV, PAGE XML (single image or ZIP for entire batch)
 - **Font selector** — Monomakh Unicode (recommended for Church Slavonic), Old Standard TT, and others
-- **Kraken model presets** — 12 Zenodo community models with one-click download
+- **Kraken model presets** — local blla segmentation model and CATMuS-Print (Zenodo, one-click download); any other Kraken `.mlmodel` can be loaded from a local path
 - **Resizable panels** — drag handles to adjust column widths, saved across sessions
 
 ### Running Tests
@@ -207,9 +207,12 @@ Ready-to-use models for Cyrillic and Glagolitic manuscripts, trained with Polysc
 |-------|-------------------|-----|-------------|
 | [crnn-ctc-church-slavonic](https://huggingface.co/achimrabus/crnn-ctc-church-slavonic) | Church Slavonic | 2.89% | QuantiSlav corpus (Elena Renje) |
 | [crnn-ctc-prosta-mova](https://huggingface.co/achimrabus/crnn-ctc-prosta-mova) | Prosta Mova (Old Ruthenian) | 3.77% | Continslav corpus (Martin Meindl) |
-| [crnn-ctc-ukrainian](https://huggingface.co/achimrabus/crnn-ctc-ukrainian) | Ukrainian (Cyrillic) | 4.76% | 19th–20th c. manuscripts (MultiHTR) |
+| [crnn-ctc-ukrainian](https://huggingface.co/achimrabus/crnn-ctc-ukrainian) | Ukrainian (Cyrillic) | 4.76%¹ | 19th–20th c. manuscripts (MultiHTR) |
 | [crnn-ctc-glagolitic](https://huggingface.co/achimrabus/crnn-ctc-glagolitic) | Croatian Glagolitic | 5.33% | Outputs Latin transliteration |
 | [crnn-ctc-russian](https://huggingface.co/achimrabus/crnn-ctc-russian) | Russian (Cyrillic) | 6.92% | 18th–20th c. manuscripts, print and typescript; pre- and post-reform orthography |
+
+¹ Trained on polygon-masked lines. Polyscriptor currently passes bounding-box crops, with which
+this model reads at about twice the CER (10.3% against 5.1% on the same validation lines).
 
 All models run on CPU (no GPU required). They are presets of the CRNN-CTC engine: in a fresh
 clone they appear as "[Hugging Face, auto-download]" and are downloaded on first load (then
@@ -244,9 +247,14 @@ Load any compatible Qwen3-VL model via its HuggingFace ID in the Qwen3-VL engine
 
 ### Kraken
 
-Segmentation and recognition models for historical manuscripts are available on Zenodo. The default `blla` layout analysis model for neural line segmentation:
+The default `blla` model for neural line segmentation ships with Kraken itself; the repository
+carries an identical copy as `pagexml/blla.mlmodel`. Further segmentation and recognition models
+are published on Zenodo, for example:
 
-**[https://zenodo.org/records/7755483](https://zenodo.org/records/7755483)**
+- **[CATMuS-Print](https://zenodo.org/records/10592716)** — printed text, multilingual (built-in preset)
+- **[Generic HTR model for Old Cyrillic uncial and semi-uncial](https://zenodo.org/records/7755483)** — Church Slavonic, 11th–16th c.
+
+Load a downloaded `.mlmodel` in the Kraken engine via its local path.
 
 ### Party
 
