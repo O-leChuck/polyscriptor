@@ -250,6 +250,9 @@ Shared Server Notice:
     # Engine-specific (optional)
     parser.add_argument('--num-beams', type=int, default=1,
                        help='Beam search width (TrOCR, Churro, default: 1)')
+    parser.add_argument('--no-repeat-ngram-size', type=int, default=0,
+                       help='TrOCR: forbid repeated token n-grams of this size (default: 0 = off; '
+                            'checkpoints often store 3, which costs accuracy on manuscripts)')
     parser.add_argument('--temperature', type=float, default=1.0,
                        help='Sampling temperature (Qwen3, default: 1.0)')
     parser.add_argument('--prompt', type=str,
@@ -744,6 +747,7 @@ class BatchHTRProcessor:
         # TrOCR always ran its hard-coded default of 4.
         config['num_beams'] = self.args.num_beams
         config['beam_search'] = self.args.num_beams
+        config['no_repeat_ngram_size'] = self.args.no_repeat_ngram_size
 
         if self.args.temperature != 1.0:
             config['temperature'] = self.args.temperature

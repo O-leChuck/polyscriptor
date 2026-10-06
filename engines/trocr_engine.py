@@ -37,6 +37,7 @@ class TrOCREngine(HTREngine):
         self._config_widget: Optional[QWidget] = None
         self._current_model_path: Optional[str] = None  # Store loaded model path
         self._num_beams: int = 4  # Effective decoding beams (set in load_model for headless/batch)
+        self._no_repeat_ngram_size: int = 0  # 0 = off; overrides the checkpoint's generation_config
 
         # Widget references (set when config widget is created)
         self._model_source_combo: Optional[QComboBox] = None
@@ -274,8 +275,10 @@ class TrOCREngine(HTREngine):
             # returns {} because there is no Qt widget). Accept both keys:
             # 'beam_search' (GUI) and 'num_beams' (CLI / batch_processing).
             self._num_beams = int(config.get("beam_search", config.get("num_beams", 4)))
+            self._no_repeat_ngram_size = int(config.get("no_repeat_ngram_size", 0))
             print(f"TrOCR decoding: num_beams={self._num_beams} "
-                  f"({'greedy' if self._num_beams <= 1 else 'beam search'})")
+                  f"({'greedy' if self._num_beams <= 1 else 'beam search'}), "
+                  f"no_repeat_ngram_size={self._no_repeat_ngram_size}")
 
             self.model = TrOCRInference(
                 model_path=model_path,
@@ -334,7 +337,9 @@ class TrOCREngine(HTREngine):
             pil_image = Image.fromarray(image)
 
             text, confidence, token_confidences = self.model.transcribe_line(
-                pil_image, num_beams=beam_search, return_confidence=True)
+                pil_image, num_beams=beam_search, return_confidence=True,
+                no_repeat_ngram_size=config.get("no_repeat_ngram_size",
+                                                self._no_repeat_ngram_size))
 
             # Build metadata with model information
             metadata = {
