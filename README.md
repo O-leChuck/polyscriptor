@@ -225,7 +225,18 @@ A collection of TrOCR models for Cyrillic handwriting (Russian, Ukrainian, Churc
 
 **[https://huggingface.co/cyrillic-trocr](https://huggingface.co/cyrillic-trocr)**
 
-These can be loaded in the TrOCR engine by entering the HuggingFace model ID (e.g. `cyrillic-trocr/trocr-base-handwritten-ru`).
+Built-in presets of the TrOCR engine (downloaded on first load):
+
+| Model | Script / Language | Note |
+|-------|-------------------|------|
+| [cyrillic-trocr/trocr-church-slavonic-handwritten](https://huggingface.co/cyrillic-trocr/trocr-church-slavonic-handwritten) | Church Slavonic | same data as the CRNN-CTC model, which reads it more accurately |
+| [cyrillic-trocr/trocr-ukrainian-handwritten](https://huggingface.co/cyrillic-trocr/trocr-ukrainian-handwritten) | Ukrainian | |
+| [cyrillic-trocr/trocr-handwritten-cyrillic](https://huggingface.co/cyrillic-trocr/trocr-handwritten-cyrillic) | Church Slavonic, Russian, Ukrainian | |
+| [achimrabus/trocr-glagolitic-handwritten](https://huggingface.co/achimrabus/trocr-glagolitic-handwritten) | Croatian Glagolitic | outputs Latin transliteration |
+
+On held-out Ukrainian pages the CRNN-CTC model is clearly more accurate than the TrOCR models,
+so for these scripts start with CRNN-CTC. Any other TrOCR model can be loaded by entering its
+HuggingFace ID or a local path.
 
 ### LightOnOCR
 

@@ -117,3 +117,13 @@ def test_scan_does_not_duplicate_registered_models(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     native._scan_pylaia_models(str(tmp_path / "models"))
     assert list(registry) == ["Example"]
+
+
+def test_trocr_presets_include_own_published_models():
+    values = [o["value"] for o in server_mod._scan_trocr_models()]
+    for repo in ("cyrillic-trocr/trocr-church-slavonic-handwritten",
+                 "cyrillic-trocr/trocr-ukrainian-handwritten",
+                 "cyrillic-trocr/trocr-handwritten-cyrillic",
+                 "achimrabus/trocr-glagolitic-handwritten"):
+        assert repo in values
+    assert values[0] == "__custom__"
