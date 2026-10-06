@@ -322,10 +322,16 @@ class PyLaiaEngine(HTREngine):
                 # Load without language model
                 # PyLaiaInference expects checkpoint_path, syms_path, and enable_spaces
                 enable_spaces = config.get("enable_spaces", True)
+                # batch_processing.py passes --device here; without it the reader
+                # picked cuda whenever a GPU was visible, even for --device cpu
+                device = config.get("device")
+                if device in (None, "", "auto"):
+                    device = None
                 self.model = PyLaiaInference(
                     checkpoint_path=model_path,
                     syms_path=syms_path,
-                    enable_spaces=enable_spaces
+                    enable_spaces=enable_spaces,
+                    device=device
                 )
                 self.model_lm = None
 

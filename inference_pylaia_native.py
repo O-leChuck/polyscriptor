@@ -111,7 +111,8 @@ class PyLaiaInference:
     Loads PyTorch checkpoint directly and runs inference on Linux.
     """
 
-    def __init__(self, checkpoint_path: str, syms_path: str = None, enable_spaces: bool = True):
+    def __init__(self, checkpoint_path: str, syms_path: str = None, enable_spaces: bool = True,
+                 device: str = None):
         """
         Initialize PyLaia inference.
 
@@ -119,8 +120,14 @@ class PyLaiaInference:
             checkpoint_path: Path to .ckpt checkpoint file
             syms_path: Path to symbols file. If None, will look in data directory.
             enable_spaces: If True, convert <space> tokens to actual spaces. If False, keep as <space>.
+            device: torch device, e.g. "cuda:2" or "cpu". Defaults to cuda:0 when a GPU is
+                present, which is what every caller got before this parameter existed. On a
+                multi-GPU box that default is a trap: four readers started with four
+                different --device flags all loaded here and queued on the same card,
+                turning a four-way split into a four-way wait.
         """
         self.enable_spaces = enable_spaces
+        self.requested_device = device
         self.checkpoint_path = Path(checkpoint_path)
 
         if not self.checkpoint_path.exists():
@@ -234,7 +241,9 @@ class PyLaiaInference:
         self.model.load_state_dict(state_dict, strict=True)
 
         # Set device
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.device = torch.device(
+            self.requested_device if self.requested_device
+            else ('cuda' if torch.cuda.is_available() else 'cpu'))
         self.model = self.model.to(self.device)
         self.model.eval()
 
@@ -362,6 +371,11 @@ PYLAIA_MODELS = {
         "checkpoint": "models/pylaia_ukrainian_v2c_20251124_180634/best_model.pt",
         "syms": "models/pylaia_ukrainian_v2c_20251124_180634/symbols.txt",
         "description": "PyLaia CRNN - Ukrainian manuscript (4.76% CER)"
+    },
+    "Russian (6.92% CER)": {
+        "checkpoint": "models/pylaia_russian_generic_20260806_123328/best_model.pt",
+        "syms": "models/pylaia_russian_generic_20260806_123328/symbols.txt",
+        "description": "PyLaia CRNN - Russian handwriting and print, 18th-20th c. (246 symbols, 6.92% CER)"
     },
     "Ukrainian (13.53% CER - OLD)": {
         "checkpoint": "models/pylaia_ukrainian_retrain_20251102_213431/best_model.pt",

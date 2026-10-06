@@ -82,7 +82,7 @@ except ImportError:
 # Engine-specific recommendations (shared server - conservative defaults)
 ENGINE_CONFIG = {
     'CRNN-CTC (PyLaia-inspired)': {
-        'min_device': 'cuda',
+        'min_device': 'cpu',  # runs on CPU too (~20 s/page incl. Kraken segmentation)
         'default_batch_size': 32,  # Conservative for shared server
         'batch_size_range': (8, 64),
         'speed_estimate': 30,  # images per minute
@@ -332,7 +332,7 @@ Shared Server Notice:
             parser.error("OpenWebUI requires --model-id (e.g., 'gpt-4-vision-preview' or model from server)")
 
     if args.segmentation_method in ('kraken', 'kraken-blla') and not KRAKEN_AVAILABLE:
-        parser.error("Kraken not installed. Install with: pip install kraken")
+        parser.error("Kraken not installed. Install it in a fresh environment together with the rest: pip install -r requirements.txt -r requirements-kraken.txt (see README)")
 
     # Parse output formats (handle both comma-separated and multiple --output-format flags)
     if args.output_format is None:
