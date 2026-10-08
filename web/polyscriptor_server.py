@@ -810,6 +810,16 @@ def _scan_vlm_models(engine_type: str = "qwen3") -> list:
     return options
 
 
+def _trocr_repeat_block_field() -> dict:
+    """The repeat-block field, defined once in the engine so other front ends can reuse it.
+
+    Imported here rather than at module level: engines are loaded lazily, and importing
+    the TrOCR engine pulls in inference_page and torch.
+    """
+    from engines.trocr_engine import REPEAT_BLOCK_FIELD
+    return dict(REPEAT_BLOCK_FIELD)
+
+
 ENGINE_SCHEMAS = {
     "CRNN-CTC (PyLaia-inspired)": lambda: {
         "fields": [
@@ -832,6 +842,7 @@ ENGINE_SCHEMAS = {
              "custom_placeholder": "HuggingFace model ID (e.g. microsoft/trocr-base-handwritten) or absolute local path"},
             {"key": "num_beams", "type": "number", "label": "Beam Search",
              "min": 1, "max": 10, "default": 4},
+            _trocr_repeat_block_field(),
             {"key": "normalize_background", "type": "checkbox",
              "label": "Normalize Background", "default": False},
             {"key": "flip_rtl", "type": "checkbox",

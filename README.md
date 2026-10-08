@@ -234,6 +234,12 @@ model's validation set at training time:
 
 Any other TrOCR model can be loaded by entering its HuggingFace ID or a local path.
 
+**Decoding.** Polyscriptor decodes TrOCR without the n-gram repeat block (`no_repeat_ngram_size=0`)
+and with `max_length=128`. TrOCR's tokenizer splits Cyrillic into single letters or smaller pieces,
+so a repeat block suppresses ordinary letter sequences; switching it off improved every Cyrillic and
+Glagolitic model we tested. The block can be set as "Repeat block" in the web interface and the
+desktop GUI, or with `--no-repeat-ngram-size`; for Latin-script models it is untested.
+
 ### LightOnOCR
 
 Lightweight VLM models (~4 GB VRAM) for line-level HTR, compatible with the LightOnOCR engine:

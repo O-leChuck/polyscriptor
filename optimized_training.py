@@ -84,7 +84,7 @@ class OptimizedTrainingConfig:
 
     # Generation (for eval)
     predict_with_generate: bool = True
-    generation_max_length: int = 64
+    generation_max_length: int = 128  # Cyrillic needs ~1 token per character; 64 cut off long lines
     generation_num_beams: int = 1  # Beam=1 for faster eval (greedy)
 
     # Augmentation
@@ -508,7 +508,11 @@ def train(config: OptimizedTrainingConfig):
     model.generation_config.pad_token_id = processor.tokenizer.pad_token_id
     model.generation_config.eos_token_id = processor.tokenizer.sep_token_id
     model.generation_config.max_length = config.generation_max_length
-    model.generation_config.no_repeat_ngram_size = 3
+    # No repeat block. TrOCR's byte-level BPE splits Cyrillic into single letters or
+    # smaller pieces, so a 3-token block forbids ordinary letter sequences from recurring
+    # in a line. It distorted the eval CER that picks the best checkpoint, and it was
+    # stored with every model as its decoding default.
+    model.generation_config.no_repeat_ngram_size = 0
     model.generation_config.num_beams = config.generation_num_beams
     # early_stopping / length_penalty are beam-only flags. transformers>=5 validates
     # the generation config on save and refuses to write them when num_beams == 1.
